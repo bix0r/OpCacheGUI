@@ -1,20 +1,16 @@
 <?php
 
-use OpCacheGUI\Network\Router;
-
 $router->get('mainjs', function() {
     header('Content-Type: application/javascript');
     readfile(__DIR__ . '/public/js/main.js');
     exit;
 });
 
-$router->get('maincss', function() use ($uriScheme) {
+/** @var \OpCacheGUI\Presentation\Url $urlRenderer */
+$router->get('maincss', function() use ($urlRenderer) {
     header('Content-Type: text/css');
 
-    $prefix = '?';
-    if ($uriScheme === Router::URL_REWRITE) {
-        $prefix = '/';
-    }
+    $prefix = $urlRenderer->get('');
 
     echo str_replace('{urltype}', $prefix, file_get_contents(__DIR__ . '/public/style/main.css'));
     exit;

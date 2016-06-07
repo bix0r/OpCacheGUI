@@ -42,6 +42,11 @@ class Request implements RequestData
      */
     private $pathVariables = [];
 
+	/**
+	 * @var string The base directory
+	 */
+	private $baseDirectory = '/';
+
     /**
      * Creates instance
      *
@@ -54,7 +59,13 @@ class Request implements RequestData
         $this->getVariables    = $get;
         $this->postVariables   = $post;
         $this->serverVariables = $server;
-        $this->pathVariables   = explode('/', trim($server['REQUEST_URI'], '/'));
+		if (array_key_exists('SCRIPT_FILENAME', $server) && array_key_exists('DOCUMENT_ROOT', $server)) {
+			$scriptFilename = $server['SCRIPT_FILENAME'];
+			$documentRoot = $server['DOCUMENT_ROOT'];
+			$this->baseDirectory   = '/' . trim(substr(dirname($scriptFilename), strlen($documentRoot)), '/');
+		}
+		$requestUri = trim(substr($server['REQUEST_URI'], strlen($this->baseDirectory)), '/');
+        $this->pathVariables   = explode('/', $requestUri);
     }
 
     /**
@@ -130,4 +141,12 @@ class Request implements RequestData
     {
         return $this->serverVariables['REMOTE_ADDR'];
     }
+
+	/**
+	 * @return string
+	 */
+	public function getBaseDirectory()
+	{
+		return $this->baseDirectory;
+	}
 }

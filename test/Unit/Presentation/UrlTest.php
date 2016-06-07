@@ -26,7 +26,7 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     {
         $url = new Url(Router::URL_REWRITE);
 
-        $this->assertSame('..', $url->get('status'));
+        $this->assertSame('/', $url->get('status'));
     }
 
     /**
@@ -64,4 +64,18 @@ class UrlTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('?other', $url->get('other'));
     }
+
+    public function testGetRewriteUrlSubdirRoot()
+	{
+		$url = new Url(Router::URL_REWRITE, '/test');
+
+        $this->assertSame('/test/', $url->get(''));
+	}
+    
+    public function testGetRewriteUrlSubdirOther()
+	{
+		$url = new Url(Router::URL_REWRITE, '/test');
+		
+        $this->assertSame('/test/other', $url->get('other'));
+	}
 }

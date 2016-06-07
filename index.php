@@ -67,9 +67,14 @@ $whitelist->buildWhitelist($login['whitelist']);
 $user = new User($sessionStorage, $login['username'], $login['password'], $whitelist);
 
 /**
+ * Setup the request object
+ */
+$request = new Request($_GET, $_POST, $_SERVER);
+
+/**
  * Setup URL renderer
  */
-$urlRenderer = new Url($uriScheme);
+$urlRenderer = new Url($uriScheme, $request->getBaseDirectory());
 
 /**
  * Setup the HTML template renderer
@@ -80,11 +85,6 @@ $htmlTemplate = new Html(__DIR__ . '/template', 'page.phtml', $translator, $urlR
  * Setup the JSON template renderer
  */
 $jsonTemplate = new Json(__DIR__ . '/template', $translator);
-
-/**
- * Setup the request object
- */
-$request = new Request($_GET, $_POST, $_SERVER);
 
 /**
  * Setup the router

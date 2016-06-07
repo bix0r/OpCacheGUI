@@ -28,16 +28,22 @@ class Url implements UrlRenderer
      * private int The type of the URIs
      */
     private $type;
+	/**
+	 * @var string The base directory
+	 */
+	private $baseDirectory;
 
-    /**
-     * Creates instance
-     *
-     * @param int $type The type of the URIs
-     */
-    public function __construct($type)
+	/**
+	 * Creates instance
+	 *
+	 * @param int $type The type of the URIs
+	 * @param string $baseDirectory The base directory
+	 */
+    public function __construct($type, $baseDirectory = '/')
     {
         $this->type = $type;
-    }
+		$this->baseDirectory = rtrim($baseDirectory, '/') . '/';
+	}
 
     /**
      * Gets the URI based on the type
@@ -65,10 +71,10 @@ class Url implements UrlRenderer
     private function getRewriteUrl($identifier)
     {
         if ($identifier === 'status') {
-            return '..';
+            return $this->baseDirectory;
         }
 
-        return '/' . $identifier;
+        return $this->baseDirectory . $identifier;
     }
 
     /**
