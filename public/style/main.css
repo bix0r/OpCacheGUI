@@ -26,10 +26,6 @@
 
 /* Custom Scrollbars for Chrome */
 
-body::-webkit-scrollbar {
-    width: 5px;
-}
-
 body::-webkit-scrollbar-thumb {
   background-color: #515151;
 
